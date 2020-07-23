@@ -1,0 +1,56 @@
+<div class="content">
+  <div class="header">
+    <mat-toolbar>
+      <h1>Chat</h1>
+      <button mat-raised-button color="accent" (click)="logout()">Logout</button>
+    </mat-toolbar>
+  </div>
+  <div class="messages">
+    <mat-list>
+      <ng-container *ngFor="let message of messages; let last = last">
+        <mat-list-item>
+          <mat-icon aria-hidden="false" aria-label="forum icon">forum</mat-icon>
+          <ng-container *ngIf="message.name">
+            <ng-container [ngSwitch]="message.name">
+              <span *ngSwitchCase="'entered'" [ngClass]="message.name">{{message.username}} entered</span>
+              <span *ngSwitchCase="'left'" [ngClass]="message.name">{{message.username}} left</span>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngIf="message.text">
+            <span class="sender">
+              <button color="primary" mat-button
+                      (click)="dmUser(message.user)">{{message.user.name + ':'}}</button>
+            </span>
+            <span class="message-text">{{message.text}}</span>
+          </ng-container>
+        </mat-list-item>
+        <mat-divider *ngIf="!last"></mat-divider>
+      </ng-container>
+    </mat-list>
+  </div>
+  <div class="users">
+    <mat-list>
+      <ng-container *ngFor="let user of users; let last = last">
+        <mat-list-item>
+          <mat-card>
+            <a mat-button color="primary" class="username" (click)="dmUser(user)">
+              <mat-icon aria-hidden="false" aria-label="person icon">person</mat-icon>
+              {{user.name}}
+            </a>
+          </mat-card>
+        </mat-list-item>
+        <mat-divider *ngIf="!last"></mat-divider>
+      </ng-container>
+    </mat-list>
+  </div>
+  <div class="send-message">
+    <form>
+      <mat-form-field>
+        <mat-label>Enter message</mat-label>
+        <input #messageInput matInput placeholder="Enter message" [(ngModel)]="text"
+               [ngModelOptions]="{standalone: true}">
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit" (click)="sendText(text)">Send</button>
+    </form>
+  </div>
+</div>
